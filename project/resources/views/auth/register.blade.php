@@ -42,12 +42,10 @@
         <div class="mt-4">
             <x-input-label for="role" :value="__('Role')" />
             
-            <select id="role" name="role" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
-                <option value="1">Candidat</option>
-                <option value="1">Coach</option>
-                <option value="3">CME</option>
-                <option value="4">Administratif</option>
-                <option value="5">Admin</option>
+            <select id="role" name="role_id" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+            @foreach(\App\Models\Role::all() as $role)
+            <option value="{{ $role->id }}">{{ $role->role }}</option>
+        @endforeach
             </select>
             
             <x-input-error :messages="$errors->get('role')" class="mt-2" />
