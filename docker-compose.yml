@@ -1,0 +1,42 @@
+services:
+  mysql:
+    image: mysql:latest
+    container_name: container_mysql_youcode
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: youcode
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: cont_phpmyadmin
+    restart: always
+    environment:
+      PMA_HOST: mysql
+      MYSQL_ROOT_PASSWORD: rootpassword
+    ports:
+      - "8081:80"
+    depends_on:
+      - mysql
+
+  php:
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+    container_name: container_youcode
+    restart: always
+    volumes:
+      - .:/var/www/html/
+    ports:
+      - "8000:80"
+    depends_on:
+      - mysql
+
+volumes:
+  mysql_data:
