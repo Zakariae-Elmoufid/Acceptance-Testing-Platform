@@ -4,6 +4,8 @@ use App\Http\Controllers\ProfileController;
 use App\http\Controllers\AuthenticatedSessionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\QuestionController;
+use App\Http\Controllers\Admin\AnswerController;
 
 Route::get('/', function () {
     return view('home');
@@ -26,7 +28,8 @@ Route::prefix('admin')->group(function (){
 });
 
 
-
+Route::resource('questions', QuestionController::class);
+Route::resource('questions.answers', AnswerController::class);
 
 require __DIR__.'/auth.php';
 
