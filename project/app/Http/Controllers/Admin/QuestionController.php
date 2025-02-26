@@ -39,7 +39,7 @@ class QuestionController extends Controller
             $question->answers()->save($answer);
         }
     
-        return redirect()->route('admin.questions.index')->with('success', 'La question a été créée avec succès.');
+        return redirect()->route('questions.index')->with('success', 'La question a été créée avec succès.');
     }
 
     /**
@@ -47,7 +47,7 @@ class QuestionController extends Controller
      */
     public function show(string $id)
     {
-        //
+        
     }
 
     /**
