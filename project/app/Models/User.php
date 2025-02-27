@@ -55,12 +55,12 @@ class User extends Authenticatable
 
     public function candidat()
     {
-        return $this->hasOne(Candidat::class);
+        return $this->hasMany(Candidat::class);
     }
 
     public function staff()
     {
-        return $this->hasOne(Staff::class);
+        return $this->hasMany(Staff::class);
     }
     
 

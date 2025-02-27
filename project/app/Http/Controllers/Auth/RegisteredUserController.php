@@ -80,7 +80,7 @@ class RegisteredUserController extends Controller
         Auth::login($user);
          
         if(Auth::user()->role_id == "1"){
-            return  redirect()->intended(route('candidat'));
+            return  redirect()->intended(route('quiz.show'));
         }else if(Auth::user()->role_id == "5"){
             return  redirect()->intended(route('admin.dashboard'));
         }else {

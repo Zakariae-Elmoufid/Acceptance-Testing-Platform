@@ -10,9 +10,12 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-    {
-        Schema::table('staff', function (Blueprint $table) {
-            $table->dropColumn('availability');
+    {   
+        Schema::create('historicals', function (Blueprint $table) {
+        $table->id();
+        $table->foreignId('candidat_id')->constrained()->onDelete('cascade');
+        $table->foreignId('answer_id')->constrained()->onDelete('cascade');
+        $table->timestamps();
         });
     }
 
@@ -21,8 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('staff', function (Blueprint $table) {
-            
-        });
+        //
     }
 };
