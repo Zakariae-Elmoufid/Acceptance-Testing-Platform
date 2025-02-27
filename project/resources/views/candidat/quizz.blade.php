@@ -26,13 +26,13 @@
     <div class="container mx-auto py-8">
         <h1 class="text-3xl font-bold mb-4 text-center">Quiz</h1>
 
-        <form id="quiz-form" action="" method="">
-            
+        <form id="quiz-form" action="{{ route('answer.store') }}" method="POST">
             @csrf
-
+            
+            <input type="hidden" name="answers" id="answers-input">
+            
             <div id="quiz-container" class="bg-white shadow-lg rounded-lg p-6">
                 <div id="question-container" class="mb-6">
-
                 </div>
 
                 <div id="progress-bar" class="h-4 bg-gray-300 rounded-full mb-6">
@@ -40,31 +40,31 @@
                 </div>
 
                 <div class="flex justify-between">
-                    <button type="button" id="prev-btn" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded transition duration-200" onclick="showPreviousQuestion()">Précédent</button>
                     <div id="timer" class="text-2xl font-bold text-primary">00:30</div>
                     <button type="button" id="next-btn" class="bg-primary hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded transition duration-200" onclick="showNextQuestion()">Suivant</button>
-              </div>
+                </div>
 
-                <div id="submit-container" class=" justify-center hidden">
+                <div id="submit-container" class="justify-center hidden">
                     <button type="submit" class="bg-primary hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded transition duration-200">Soumettre</button>
                 </div>
             </div>
-
         </form>   
-        </div>
-
+    </div>
 
 <script>
     const questions = @json($questions);
     const questionContainer = document.getElementById('question-container');
     const progressBar = document.getElementById('progress');
     const timerElement = document.getElementById('timer');
-    const prevButton = document.getElementById('prev-btn');
     const nextButton = document.getElementById('next-btn');
     const submitContainer = document.getElementById('submit-container');
+    const quizForm = document.getElementById('quiz-form');
+    const answersInput = document.getElementById('answers-input');
+    
     let currentQuestionIndex = 0;
     let timeLeft = 30;
     let timer;
+    let userAnswers = {};
 
     function startTimer() {
         timeLeft = 30;
@@ -85,9 +85,18 @@
         timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     }
 
+    function saveAnswer() {
+        const currentQuestion = questions[currentQuestionIndex];
+        const selectedAnswer = document.querySelector(`input[name="question[${currentQuestion.id}]"]:checked`);
+        if (selectedAnswer) {
+            userAnswers[currentQuestion.id] = selectedAnswer.value;
+            // Mettre à jour le champ caché avec toutes les réponses
+            answersInput.value = JSON.stringify(Object.values(userAnswers));
+        }
+    }
+
     function showQuestion() {
-        const question =
-        questions[currentQuestionIndex];
+        const question = questions[currentQuestionIndex];
         const questionHtml = `
             <div class="bg-blue-100 border-l-4 border-primary p-4 mb-4">
                 <p class="font-semibold mb-2 text-lg">${currentQuestionIndex + 1}. ${question.content}</p>
@@ -95,7 +104,9 @@
             <div class="grid grid-cols-1 gap-4">
                 ${question.answers.map(answer => `
                     <label class="flex items-center bg-white p-4 border-2 border-gray-300 rounded-lg cursor-pointer transition duration-200 hover:border-primary">
-                        <input type="radio" name="answers[${question.id}]" value="${answer.id}" class="mr-2">
+                        <input type="radio" name="question[${question.id}]" value="${answer.id}" class="mr-2" 
+                            ${userAnswers[question.id] == answer.id ? 'checked' : ''} 
+                            onchange="saveAnswer()">
                         <span class="text-gray-700">${answer.content}</span>
                     </label>
                 `).join('')}
@@ -103,7 +114,6 @@
         `;
         questionContainer.innerHTML = questionHtml;
 
-        prevButton.disabled = currentQuestionIndex === 0;
         nextButton.disabled = currentQuestionIndex === questions.length - 1;
         progressBar.style.width = `${((currentQuestionIndex + 1) / questions.length) * 100}%`;
 
@@ -120,18 +130,27 @@
     }
 
     function showNextQuestion() {
+        saveAnswer();
         if (currentQuestionIndex < questions.length - 1) {
             currentQuestionIndex++;
             showQuestion();
         }
     }
 
-    function showPreviousQuestion() {
-        if (currentQuestionIndex > 0) {
-            currentQuestionIndex--;
-            showQuestion();
+    quizForm.addEventListener('submit', function(e) {
+        saveAnswer();
+        
+        // Vérifier si toutes les questions ont une réponse
+        const answeredQuestions = Object.keys(userAnswers).length;
+        if (answeredQuestions < questions.length) {
+            alert('Veuillez répondre à toutes les questions avant de soumettre.');
+            return;
         }
-    }
+
+        this.submit();
+    });
 
     showQuestion();
 </script>
+</body>
+</html>

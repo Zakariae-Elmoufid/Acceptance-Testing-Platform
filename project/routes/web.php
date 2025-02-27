@@ -7,6 +7,8 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\QuestionController;
 use App\Http\Controllers\Admin\AnswerController;
 use App\Http\Controllers\Candidat\QuizController;
+use App\Http\Controllers\Candidat\HistoricalController;
+
 
 Route::get('/', function () {
     return view('home');
@@ -33,6 +35,9 @@ Route::resource('questions', QuestionController::class);
 Route::resource('questions.answers', AnswerController::class);
 
 Route::get('/quiz', [QuizController::class,'show'])->name('quiz.show');
+
+Route::post('/answer',[HistoricalController::class , 'store'])->name('answer.store');
+Route::get('/result',[HistoricalController::class , 'result'])->name('quiz.result');
 
 require __DIR__.'/auth.php';
 

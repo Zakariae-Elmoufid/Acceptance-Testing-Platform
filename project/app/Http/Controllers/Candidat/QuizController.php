@@ -9,7 +9,7 @@ class QuizController extends Controller
 {
     public function show()
 {
-    $questions = Question::with('answers')->inRandomOrder()->limit(10)->get();
+    $questions = Question::with('answers')->inRandomOrder()->get();
     return view('candidat.quizz', compact('questions'));
 }
 
