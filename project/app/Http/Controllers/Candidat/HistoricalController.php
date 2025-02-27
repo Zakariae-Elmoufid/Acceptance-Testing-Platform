@@ -25,5 +25,5 @@ class HistoricalController extends Controller
             ]);
         }
 
-        return view('Candidat.result')->with('success', 'Réponses enregistrées avec succès!');    }
+        return view('Candidat.result')->with('success', 'answers saved with  succussful!');    }
 }
