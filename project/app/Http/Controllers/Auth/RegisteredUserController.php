@@ -58,21 +58,25 @@ class RegisteredUserController extends Controller
             if ($request->hasFile('document')) {
                 $documentPath = $request->file('document')->store('document', 'public');
             }
-            Candidat::create([
+            $candidat =  Candidat::create([
                 'user_id' => $user->id,  
                 'birth_date' => $request->birth_date,
                 'address' => $request->address,
                 'phone' => $request->phone,
                 'document' => $documentPath,
             ]);
+            session(['candidat_id' => $candidat->id]);
+
         } else {
             if ($request->hasFile('profile_photo')) {
                 $profilePhotoPath = $request->file('profile_photo')->store('profile-photos', 'public');
             }
-            Staff::create([
+            $staff = Staff::create([
                 'user_id' => $user->id, 
                 'profile_photo' => $profilePhotoPath,
                  ]);
+                 session(['staff_id' => $staff->id]);
+
         }
 
         event(new Registered($user));
@@ -80,7 +84,9 @@ class RegisteredUserController extends Controller
         Auth::login($user);
          
         if(Auth::user()->role_id == "1"){
-            return  redirect()->intended(route('quiz.show'));
+            session(['candidat_id' => Auth::id()]);
+
+            return  redirect()->intended(route('quiz'));
         }else if(Auth::user()->role_id == "5"){
             return  redirect()->intended(route('admin.dashboard'));
         }else {

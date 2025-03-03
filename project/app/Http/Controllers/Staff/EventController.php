@@ -9,6 +9,12 @@ use App\Models\Event;
 
 class EventController extends Controller
 {
+   public function index(){
+    $events = Event::all();
+
+    return view('staff.index', compact('events'));
+   }
+
     public function store(Request $request){
         $staff = Staff::where('user_id',  auth()->id())->first();
         $staffId  = $staff->id;
@@ -22,7 +28,7 @@ class EventController extends Controller
         ]);
 
         return redirect()->route('satff')->with('success', 'event  saved with  succussful!');  
-      
-
     }
+
+
 }

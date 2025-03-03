@@ -40,7 +40,23 @@
         
         <div class="bg-white p-4 rounded-lg shadow col-span-2">
             <h3 class="text-xl font-bold mb-4">Today's Events</h3>
-            <ul id="eventList" class="divide-y divide-gray-200"></ul>
+
+            <ul id="eventList" class="divide-y divide-gray-200">
+            @forelse ($events as $event)
+            <li class="py-4">
+                <h4 class="text-lg font-semibold text-blue-600">{{ $event->title }}</h4>
+                <p class="text-sm text-gray-500">
+                    <strong>Start:</strong> {{ Carbon\Carbon::parse($event->date_start)->format('d M Y H:i') }} <br>
+                    <strong>End:</strong> {{ Carbon\Carbon::parse($event->date_end)->format('d M Y H:i') }}
+                </p>
+                <p class="mt-2 text-gray-700">
+                    {{ $event->description }}
+                </p>
+            </li>
+        @empty
+            <li class="py-4 text-gray-500">No events scheduled for today.</li>
+        @endforelse
+            </ul>
         </div>
 
     </div>
