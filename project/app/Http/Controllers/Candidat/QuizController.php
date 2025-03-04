@@ -29,7 +29,7 @@ class QuizController extends Controller
             $questions = Question::with('answers')->inRandomOrder()->get();
             return view('candidat.quizz', compact('questions'));
         } else {
-            return view('candidat.result');  
+            return redirect()->route('candidat.result');
         }
     }
 

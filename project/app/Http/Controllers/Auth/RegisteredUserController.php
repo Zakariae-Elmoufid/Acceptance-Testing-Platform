@@ -74,7 +74,8 @@ class RegisteredUserController extends Controller
             $staff = Staff::create([
                 'user_id' => $user->id, 
                 'profile_photo' => $profilePhotoPath,
-                 ]);
+                'type' => $user->role->role,
+            ]);
                  session(['staff_id' => $staff->id]);
 
         }
@@ -85,7 +86,6 @@ class RegisteredUserController extends Controller
          
         if(Auth::user()->role_id == "1"){
             session(['candidat_id' => Auth::id()]);
-
             return  redirect()->intended(route('quiz'));
         }else if(Auth::user()->role_id == "5"){
             return  redirect()->intended(route('admin.dashboard'));

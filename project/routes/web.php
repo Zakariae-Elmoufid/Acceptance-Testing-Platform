@@ -35,9 +35,10 @@ Route::resource('questions', QuestionController::class);
 Route::resource('questions.answers', AnswerController::class);
 
 Route::get('/quiz', [QuizController::class,'show'])->name('quiz');
-
+Route::get('/candidat/result',[HistoricalController::class , 'show'])->name('candidat.result');
 Route::post('/answer',[HistoricalController::class , 'store'])->name('answer.store');
 Route::get('/result',[HistoricalController::class , 'result'])->name('quiz.result');
+
 
 // Route::get('/staff', function(){
 //     return view('staff.index');
@@ -48,3 +49,5 @@ route::get('/admin/result',[HistoricalController::class , 'calcul'])->name('resu
 require __DIR__.'/auth.php';
 
 Route::get('/staff',[EventController::class ,'index'])->name('satff');
+
+

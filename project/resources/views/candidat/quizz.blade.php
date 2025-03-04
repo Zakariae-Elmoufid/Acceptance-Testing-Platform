@@ -33,6 +33,7 @@
             
             <div id="quiz-container" class="bg-white shadow-lg rounded-lg p-6">
                 <div id="question-container" class="mb-6">
+                    
                 </div>
 
                 <div id="progress-bar" class="h-4 bg-gray-300 rounded-full mb-6">
