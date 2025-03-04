@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Staff;
 use App\Models\Event;
+use App\Models\StaffAvailabilities;
 
 class EventController extends Controller
 {
@@ -25,6 +26,12 @@ class EventController extends Controller
             'date_start' => $request->date_start,
             'date_end' => $request->date_end,
             'description' => $request->description,
+        ]);
+
+        StaffAvailabilities::create([
+            'staff_id' => $staffId,
+            'start_time' => $request->date_start,
+            'end_time' => $request->date_end,
         ]);
 
         return redirect()->route('satff')->with('success', 'event  saved with  succussful!');  

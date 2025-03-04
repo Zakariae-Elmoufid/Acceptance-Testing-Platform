@@ -16,4 +16,10 @@ class Staff extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function StaffAvailabilities()
+    {
+        return $this->hasMany(Staff::class);
+    }
+    
 }

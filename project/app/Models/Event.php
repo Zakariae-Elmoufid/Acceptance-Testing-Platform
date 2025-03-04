@@ -10,8 +10,7 @@ class Event extends Model
         'staff_id',
         'date_start',
         'date_end',
-        'phone',
-        'description',
         'title',
+        'description',
     ];
 }
