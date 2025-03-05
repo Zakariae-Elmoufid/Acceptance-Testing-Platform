@@ -5,9 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 class PresentialTest extends Model
-{
+{    
+    protected $table  = 'presential_test'; 
     protected $fillable = [
-        'type',
+    'type',
     'candidat_id',
     'staff_id',
     'date_start',

@@ -33,6 +33,7 @@ class AuthenticatedSessionController extends Controller
         if(Auth::user()->role_id == "1"){
 
             return  redirect()->route('quiz');
+            
 
 
         }else if(Auth::user()->role_id == "5"){

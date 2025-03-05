@@ -9,6 +9,8 @@ use App\Http\Controllers\Admin\AnswerController;
 use App\Http\Controllers\Candidat\QuizController;
 use App\Http\Controllers\Candidat\HistoricalController;
 use App\Http\Controllers\Staff\EventController;
+use App\Http\Controllers\StaffPresentialTestController;
+
 
 Route::get('/', function () {
     return view('home');
@@ -49,5 +51,7 @@ route::get('/admin/result',[HistoricalController::class , 'calcul'])->name('resu
 require __DIR__.'/auth.php';
 
 Route::get('/staff',[EventController::class ,'index'])->name('satff');
+
+Route::get('staff.assing',[StaffPresentialTestController::class, 'assignTechnicalTest'])->name('assing.staff');
 
 
