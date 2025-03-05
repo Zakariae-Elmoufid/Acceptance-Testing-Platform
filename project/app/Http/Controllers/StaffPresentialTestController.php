@@ -36,7 +36,7 @@ class StaffPresentialTestController extends Controller
         
         
         
-        public function assignTechnicalTest()
+    public function assignTechnicalTest()
    {
 
     $candidat = Candidat::where('user_id',  auth()->id())->first();
