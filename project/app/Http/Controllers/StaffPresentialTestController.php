@@ -32,10 +32,6 @@ class StaffPresentialTestController extends Controller
 
         
         
-        
-        
-        
-        
     public function assignTechnicalTest()
    {
 
@@ -86,13 +82,68 @@ class StaffPresentialTestController extends Controller
         ->groupBy('users.name')
         ->get();
 
+        return view('candidat.result', compact('historical','test'));
+
+    });
+
+}
+
+
+public function assignAdministrativTest(){
+    $candidat = Candidat::where('user_id',  auth()->id())->first();
+    $candidatId = $candidat->id;
+    $afterDate = Carbon::now();
+    $testDuration = 15;
+
+    $availableSlot = $this->findNextAvailableSlot('administrativ', $afterDate, $testDuration);
+    
+    if (!$availableSlot) {
+        return null; 
+    }
 
 
 
+    return DB::transaction(function () use ($candidatId, $availableSlot, $testDuration) {
+        $startTime = Carbon::parse($availableSlot['start_time']); 
+        $endTime = $startTime->copy()->addMinutes($testDuration);
+
+        $test = PresentialTest::create([
+            'type' => 'administrativ',
+            'staff_id' => $availableSlot['staff_id'],
+            'candidat_id' => $candidatId,
+            'date_start' => $startTime,
+            'date_end' => $endTime,
+            'location' => 'YouCode youssofia'
+            ]);
+        
+        
+        Event::create([
+            'staff_id' => $availableSlot['staff_id'],
+            'date_start'  => $availableSlot['start_time'],
+            'date_end' => $endTime,
+            'title'  => 'administartiv test',
+            'description' => 'administrativ test to evaluate the candidate  softs skills',
+        ]);
+
+
+        $historical = DB::table('historicals')
+        ->join('candidats', 'candidats.id', '=', 'historicals.candidat_id')
+        ->join('users', 'users.id', '=', 'candidats.user_id')
+        ->join('answers', 'answers.id', '=', 'historicals.answer_id')
+        ->select(
+            'users.name as name', 
+            DB::raw('SUM(answers.is_correct) as total')
+        )
+        ->where('candidats.id', $candidatId) 
+        ->groupBy('users.name')
+        ->get();
+        
         return view('candidat.result', compact('historical','test'));
 
     });
 }
+
+
 
 
 

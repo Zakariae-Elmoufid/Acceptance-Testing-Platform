@@ -12,8 +12,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-            $schedule->job(new \App\Jobs\GenerateDailyStaffAvailabilities())->dailyAt('00:10');
-            $schedule->job(new \App\Jobs\UpdateStaffAvailabilities())->dailyAt('00:15');
+            $schedule->job(new \App\Jobs\GenerateDailyStaffAvailabilities())->everyMinute();
+            $schedule->job(new \App\Jobs\UpdateStaffAvailabilities())->everyMinute();
     }
     /**
      * Register the commands for the application.
