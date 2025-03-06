@@ -14,6 +14,6 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call(QuestionsTableSeeder::class);
-
+        $this->call(StaffAvailabilitySeeder::class);
     }
 }

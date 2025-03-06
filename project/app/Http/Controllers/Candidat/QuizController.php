@@ -7,22 +7,32 @@ use App\Models\Question;
 use  App\Http\Controllers\Controller;
 use App\Models\Candidat;
 use App\Models\Historical;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+
 
 class QuizController extends Controller
 {
     public function show()
-{
-    $candidat = Candidat::where('user_id',  auth()->id())->first();
+{ 
+    
+    $candidatId = DB::table('candidats')
+    ->where('user_id', Auth::id())
+    ->value('id'); 
 
-    $exists = Historical::where('candidat_id', $candidat)->exists();
-    if($exists){
-        $questions = Question::with('answers')->inRandomOrder()->get();
-        return view('candidat.quizz', compact('questions'));
-    }else {
-        return view('Candidat.result');  
+    
+    $exists = DB::table('historicals')
+    ->where('candidat_id', $candidatId)
+    ->exists();
+
+        if($exists  == false) {
+            $questions = Question::with('answers')->inRandomOrder()->get();
+            return view('candidat.quizz', compact('questions'));
+        } else {
+            return redirect()->route('candidat.result');
+        }
     }
 
-}
 }
 
 

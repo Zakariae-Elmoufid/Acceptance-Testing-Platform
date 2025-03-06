@@ -8,6 +8,8 @@ use App\Http\Controllers\Admin\QuestionController;
 use App\Http\Controllers\Admin\AnswerController;
 use App\Http\Controllers\Candidat\QuizController;
 use App\Http\Controllers\Candidat\HistoricalController;
+use App\Http\Controllers\Staff\EventController;
+use App\Http\Controllers\StaffPresentialTestController;
 
 
 Route::get('/', function () {
@@ -34,10 +36,22 @@ Route::prefix('admin')->group(function (){
 Route::resource('questions', QuestionController::class);
 Route::resource('questions.answers', AnswerController::class);
 
-Route::get('/quiz', [QuizController::class,'show'])->name('quiz.show');
-
+Route::get('/quiz', [QuizController::class,'show'])->name('quiz');
+Route::get('/candidat/result',[HistoricalController::class , 'show'])->name('candidat.result');
 Route::post('/answer',[HistoricalController::class , 'store'])->name('answer.store');
 Route::get('/result',[HistoricalController::class , 'result'])->name('quiz.result');
 
+
+// Route::get('/staff', function(){
+//     return view('staff.index');
+// })->name('satff');
+
+Route::post('/store' ,[EventController::class , 'store'])->name('event.store');
+route::get('/admin/result',[HistoricalController::class , 'calcul'])->name('results');
 require __DIR__.'/auth.php';
+
+Route::get('/staff',[EventController::class ,'index'])->name('satff');
+
+Route::get('staff.assing',[StaffPresentialTestController::class, 'assignTechnicalTest'])->name('assing.staff');
+
 
