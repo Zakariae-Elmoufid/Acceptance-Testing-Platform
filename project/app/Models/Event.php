@@ -13,4 +13,14 @@ class Event extends Model
         'title',
         'description',
     ];
+
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($event) {
+            PresentialTest::updateStaffAvailability($event->staff_id, $event->date_start, $event->date_end);
+        });
+    }
 }

@@ -18,5 +18,10 @@ class Candidat extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function groupTest()
+    {
+        return $this->hasMany(TestGroup::class);
+    }
     
 }

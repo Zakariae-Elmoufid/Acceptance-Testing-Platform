@@ -25,13 +25,18 @@ class GenerateDailyStaffAvailabilities implements ShouldQueue
      */
     public function handle(): void
     {
+        \Log::info('Le job commence à s\'exécuter.');
+    
         $staffMembers = DB::table('staff')->pluck('id'); 
         $today = Carbon::now()->addDays(1); 
-
+    
         if (in_array($today->dayOfWeek, [Carbon::SATURDAY, Carbon::SUNDAY])) {
+            \Log::info('C\'est le week-end, le job est ignoré.');
             return;
         }
-
+    
+        \Log::info('Membres du personnel récupérés: ', $staffMembers->toArray());
+    
         foreach ($staffMembers as $staffId) {
             DB::table('staff_availabilities')->insert([
                 [
@@ -50,5 +55,8 @@ class GenerateDailyStaffAvailabilities implements ShouldQueue
                 ]
             ]);
         }
+    
+        \Log::info('Insertion terminée.');
     }
+    
 }
