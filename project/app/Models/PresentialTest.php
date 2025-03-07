@@ -4,7 +4,6 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
-
 use Illuminate\Database\Eloquent\Model;
 
 class PresentialTest extends Model
@@ -49,10 +48,10 @@ class PresentialTest extends Model
             ->first();
 
         if ($availability) {
-            if ($availability->start_time >= $eventStart && $availability->end_time <= $eventEnd) {
-                // Remove availability completely
-                DB::table('staff_availabilities')->where('id', $availability->id)->delete();
-            } else {
+            // if ($availability->start_time >= $eventStart && $availability->end_time <= $eventEnd) {
+            //     // Remove availability completely
+            //     DB::table('staff_availabilities')->where('id', $availability->id)->delete();
+            // } else {
                 // Adjust the availability slot
                 DB::table('staff_availabilities')
                     ->where('id', $availability->id)
@@ -67,7 +66,7 @@ class PresentialTest extends Model
                         'updated_at' => now(),
                     ]);
                 }
-            }
+            // }
         }
     }
 

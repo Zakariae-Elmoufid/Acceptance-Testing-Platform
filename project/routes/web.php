@@ -52,6 +52,6 @@ require __DIR__.'/auth.php';
 
 Route::get('/staff',[EventController::class ,'index'])->name('satff');
 
-Route::get('staff.assing',[StaffPresentialTestController::class, 'scheduleAllTestsForCandidate'])->name('assing.staff');
+Route::get('staff.assing',[StaffPresentialTestController::class, 'checkCandidateReadiness'])->name('assing.staff');
 
 
